@@ -1,0 +1,16 @@
+export default async function getHomeCompleteData() {
+   const formData = new URLSearchParams();
+   formData.append('token1', process.env.token1);
+   formData.append('token2', process.env.token2);
+   //const url = `${process.env.API_URL}pages/?_t=${Date.now()}`; // bust cache
+   //const finalresult = await fetch(url, {
+   const finalresult = await fetch(process.env.API_URL+'pages/', {
+      next: { revalidate: 10 },
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData,
+   });  
+   return finalresult.json();
+}
